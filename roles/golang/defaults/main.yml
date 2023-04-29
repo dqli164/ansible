@@ -1,0 +1,6 @@
+---
+# defaults file for golang
+go_install_path: "/usr/local/go"
+go_package_url: "https://go.dev/dl/go1.17.8.linux-amd64.tar.gz"
+go_package_checksum: "sha256:980e65a863377e69fd9b67df9d8395fd8e93858e7a24c9f55803421e453f4f99"
+go_path: "~/develop/goworkspace"

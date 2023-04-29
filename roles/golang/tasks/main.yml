@@ -1,0 +1,39 @@
+---
+# tasks file for golang
+- name: download {{go_package_url}} package to localhost
+  get_url:
+    url: "{{go_package_url}}"
+    dest: "/tmp/{{go_package_url|basename}}"
+    checksum: "{{go_package_checksum}}"
+  delegate_to: 127.0.0.1
+
+- name: create {{go_install_path}} directory
+  file:
+    path: "{{item}}"
+    state: directory
+  with_items:
+    - "{{go_path}}/src"
+    - "{{go_path}}/pkg"
+    - "{{go_path}}/bin"
+    
+- name: unarchive go package
+  unarchive:
+    src: "/tmp/{{go_package_url|basename}}"
+    dest: "{{go_install_path}}" 
+    extra_opts:
+    - --strip-components=1
+
+- name: set environment variable
+  lineinfile:
+    path: ~/.bashrc
+    line: "{{item}}"
+  with_items:
+    - "# go" 
+    - "export GOPATH={{go_path}}"
+    - "export GOBIN={{go_path}}/bin"
+    - "export GO111MODULE=on"
+    - "export GOPROXY=https://goproxy.cn"
+    - "export PATH={{go_install_path}}/bin:$GOBIN:$PATH"
+
+- name: refresh .bashrc 
+  shell: source ~/.bashrc
