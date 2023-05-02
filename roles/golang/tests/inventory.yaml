@@ -3,5 +3,5 @@ all:
     ansible_ssh_user: vagrant
     ansible_ssh_pass: vagrant
   hosts:
-    192.168.2.100:
+    localhost:
       ansible_become_password: vagrant
